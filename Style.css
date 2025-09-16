@@ -1,0 +1,28 @@
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    margin:10;
+    padding:10;
+}
+header {
+    background-color:rgb(128, 128, 87);
+    color: azure;
+    padding: 20px;
+text-align:center;
+}
+.about{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:20px;
+}
+.responsive-img{
+    width:100%;
+    max-width: fit-content;
+    height:auto;
+}
+@media (max-width: 600px){
+    .about{
+        flex-direction:column;
+    }
+}
