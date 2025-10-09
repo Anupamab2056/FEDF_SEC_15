@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validated HTML Form with JavaScript</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      padding: 30px 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      width: 340px;
+      color: white;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input:focus {
+      border-color: #00c6ff;
+      box-shadow: 0 0 8px #00c6ff;
+      outline: none;
+    }
+
+    .error {
+      color: #ffb3b3;
+      font-size: 13px;
+      margin-top: 3px;
+      height: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+
+  <form id="myForm" action="#" method="post" novalidate>
+    <h2>Registration Form</h2>
+
+    <label for="fullname">Full Name:</label>
+    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+    <div class="error" id="fullnameError"></div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    <div class="error" id="emailError"></div>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <div class="error" id="passwordError"></div>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+    <div class="error" id="phoneError"></div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const fullname = document.getElementById('fullname');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const phone = document.getElementById('phone');
+
+    const fullnameError = document.getElementById('fullnameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const phoneError = document.getElementById('phoneError');
+
+    fullname.addEventListener('input', () => {
+      fullnameError.textContent = fullname.value.trim() === "" ? "Full name is required." : "";
+    });
+
+    email.addEventListener('input', () => {
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email.value.trim() === "") emailError.textContent = "Email is required.";
+      else if (!pattern.test(email.value)) emailError.textContent = "Invalid email format.";
+      else emailError.textContent = "";
+    });
+
+    password.addEventListener('input', () => {
+      const minLength = 6;
+      const hasUpper = /[A-Z]/.test(password.value);
+      const hasLower = /[a-z]/.test(password.value);
+      const hasNumber = /[0-9]/.test(password.value);
+      const hasSpecial = /[@$!%*?&]/.test(password.value);
+
+      if (password.value.trim() === "") passwordError.textContent = "Password is required.";
+      else if (password.value.length < minLength) passwordError.textContent = "Must be at least 6 characters.";
+      else if (!(hasUpper && hasLower && hasNumber && hasSpecial))
+        passwordError.textContent = "Use upper, lower, number & special char.";
+      else passwordError.textContent = "";
+    });
+
+    phone.addEventListener('input', () => {
+      const phonePattern = /^[0-9]{10}$/;
+      if (phone.value.trim() === "") phoneError.textContent = "Phone number is required.";
+      else if (!phonePattern.test(phone.value)) phoneError.textContent = "Must be 10 digits.";
+      else phoneError.textContent = "";
+    });
+
+    document.getElementById('myForm').addEventListener('submit', e => {
+      if (fullnameError.textContent || emailError.textContent || passwordError.textContent || phoneError.textContent) {
+        e.preventDefault();
+        alert("Please fix the errors before submitting.");
+      }
+    });
+  </script>
+
+</body>
+</html>
