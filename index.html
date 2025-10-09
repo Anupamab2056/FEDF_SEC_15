@@ -1,158 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Weather App</title>
-<style>
-/* Reset + Layout */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  <meta charset="UTF-8">
+  <title>📚 Hyderabad Central Library</title>
+  <style>
+    /* Reset & base */
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f9fafc;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    h1, h2 {
+      margin: 0 0 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0056b3;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    /* Containers */
+    .book-list, .cart {
+      max-width: 700px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+    /* Book item */
+    .book {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .book:last-child {
+      border-bottom: none;
+    }
+
+    .book strong {
+      font-size: 1.05rem;
+      color: #111;
+    }
+
+    .book small {
+      color: #777;
+    }
+
+    .book span {
+      font-weight: 600;
+      color: #28a745;
+    }
+
+    /* Buttons */
+    button {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0056b3, #003f7f);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Out of stock label */
+    .out-of-stock {
+      font-weight: bold;
+      color: #dc3545;
+    }
+
+    /* Cart section */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #ddd;
+      font-size: 0.95rem;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 2px solid #eee;
+      font-size: 1.05rem;
+      color: #111;
+    }
+    .add-to-cart-btn.added {
+  background-color: #28a745;
+  color: white;
+  cursor: not-allowed;
+}
+.add-to-cart-btn.added {
+  background-color: #28a745;
+  color: white;
+  cursor: not-allowed;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #222;
-}
 
-/* Header */
-h1 {
-  font-size: 2.5rem;
-  color: #fff;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-
-/* Input + Button */
-input {
-  padding: 12px 16px;
-  margin: 8px;
-  border: none;
-  border-radius: 25px;
-  outline: none;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 220px;
-  transition: all 0.2s ease;
-}
-
-input:focus {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-}
-
-button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-button:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-}
-
-/* Weather Box */
-.weather-box {
-  margin-top: 25px;
-  padding: 25px 30px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  min-width: 280px;
-  transition: all 0.3s ease;
-  animation: fadeIn 0.6s ease-in-out;
-}
-
-.weather-box h2 {
-  margin-bottom: 10px;
-  font-size: 1.6rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.weather-box p {
-  font-size: 1rem;
-  margin: 5px 0;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
+  </style>
 </head>
 <body>
-<h1>Weather App</h1>
-<input type="text" id="cityInput" placeholder="Enter city name" />
-<button id="getWeatherBtn">Get Weather</button>
-<div id="weatherResult" class="weather-box"></div>
-<script>
-const cityInput = document.getElementById("cityInput");
-const getWeatherBtn = document.getElementById("getWeatherBtn");
-const weatherResult = document.getElementById("weatherResult");
-async function fetchWeather(city) {
-try {
-if (!city) {
-weatherResult.innerHTML = "<p>Please enter a city name.</p>";
-return;
-}
-const response = await
-fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
-if (!response.ok) {
-throw new Error("City not found or API error.");
-}
-const data = await response.json();
-displayWeather(city, data);
-localStorage.setItem("lastCity", city);
-} catch (error) {
-weatherResult.innerHTML = `<p style="color:red;">${error.message}</p>`;
-}
-}
-function displayWeather(city, data) {
-const current = data.current_condition[0];
-weatherResult.innerHTML = `
-<h2>${city}</h2>
-<p><strong>Temperature:</strong> ${current.temp_C} °C</p>
-<p><strong>Condition:</strong> ${current.weatherDesc[0].value}</p>
-<p><strong>Humidity:</strong> ${current.humidity}%</p>
-`;
-}
-getWeatherBtn.addEventListener("click", () => {
-const city = cityInput.value.trim();
-fetchWeather(city);
-});
-window.onload = () => {
-const lastCity = localStorage.getItem("lastCity");
-if (lastCity) {
-fetchWeather(lastCity);
-}
-};
-</script>
+  <h1>📚 Hyderabad Central Library</h1>
+  
+  <!-- Book List -->
+  <div class="book-list" id="bookList"></div>
+  
+  <!-- Cart -->
+  <div class="cart">
+    <h2>🛒 Shopping Cart</h2>
+    <div id="cartItems"></div>
+    <div class="cart-total" id="cartTotal">Total: ₹0</div>
+  </div>
+  
+  <script>
+    // --- Data (book list) ---
+    const books = [
+      { title: "Introduction to AI", author: "John Smith", price: 499, availability: "in stock" },
+      { title: "Modern Web Development", author: "Sarah Lee", price: 699, availability: "in stock" },
+      { title: "Data Structures in C", author: "A. Sharma", price: 399, availability: "out of stock" },
+      { title: "Machine Learning Basics", author: "P. Gupta", price: 899, availability: "in stock" }
+    ];
+
+    // --- Cart management ---
+    let cart = [];
+
+    function addToCart(book) {
+      cart.push(book);
+    }
+
+    // --- Update cart UI ---
+    function updateCartUI(cart) {
+      const cartItems = document.getElementById("cartItems");
+      const cartTotal = document.getElementById("cartTotal");
+
+      cartItems.innerHTML = "";
+      let total = 0;
+
+      cart.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.classList.add("cart-item");
+        div.innerHTML = `
+          <span>${item.title} - ₹${item.price}</span>
+          <button class="remove-btn" data-index="${idx}">✖</button>
+        `;
+        cartItems.appendChild(div);
+        total += item.price;
+      });
+
+      cartTotal.textContent = "Total: ₹" + total;
+
+      // Remove button event
+      cartItems.onclick = (e) => {
+        if (e.target.classList.contains("remove-btn")) {
+          const index = e.target.getAttribute("data-index");
+          cart.splice(index, 1);
+          updateCartUI(cart);
+        }
+      };
+    }
+
+    // --- Display book list ---
+    function displayBooks() {
+      const bookList = document.getElementById("bookList");
+      bookList.innerHTML = "";
+
+      books.forEach((book, index) => {
+        const bookDiv = document.createElement("div");
+        bookDiv.classList.add("book");
+
+        bookDiv.innerHTML = `
+          <div>
+            <strong>${book.title}</strong><br>
+            <small>by ${book.author}</small><br>
+            <span>₹${book.price}</span>
+          </div>
+          <div>
+            ${
+              book.availability === "in stock"
+                ? `<button class="add-to-cart-btn" data-index="${index}">Add to Cart</button>`
+                : `<span class="out-of-stock">Out of Stock</span>`
+            }
+          </div>
+        `;
+
+        bookList.appendChild(bookDiv);
+      });
+
+      // Add to cart event
+      bookList.onclick = (e) => {
+        if (e.target.classList.contains("add-to-cart-btn")) {
+          const idx = e.target.getAttribute("data-index");
+          addToCart(books[idx]);
+          updateCartUI(cart);
+
+          e.target.textContent = "Added ✅";
+          e.target.disabled = true;
+          e.target.style.background = "#28a745";
+        }
+      };
+    }
+
+    // --- Initialize ---
+    displayBooks();
+    updateCartUI(cart);
+  </script>
 </body>
 </html>
